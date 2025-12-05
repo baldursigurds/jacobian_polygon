@@ -79,7 +79,7 @@ def is_coordinate(f):
     fred = restricted_face(f)
     return f.dimension() == fred.ambient_dimension() - 1
 
-def alt_jacobian_polyhedron(V, d=-1):
+def alt_jacobian_polygon(V, d=-1):
     n = len(V[0]) - 1
     if d == -1:
         d = n
@@ -107,11 +107,11 @@ def alt_jacobian_polyhedron(V, d=-1):
         r.append( [(-1)**(n-s) * w, mv, nv] )
     return normalize_polyhedron(r)
 
-def jacobian_polyhedron(V, d=-1):
+def jacobian_polygon(V, d=-1):
     n = len(V[0]) - 1
     if d == -1:
         d = n
-    return normalize_polyhedron( alt_jacobian_polyhedron(V, d) + alt_jacobian_polyhedron(V, d-1))
+    return normalize_polyhedron( alt_jacobian_polygon(V, d) + alt_jacobian_polygon(V, d-1))
 
 def pos_int_prim(v):
     if len(v) and v[0] < 0:
@@ -201,7 +201,7 @@ def the_conjecture_tester(V, print_nonzeros=False):
     maxdeg_facets = -1
     maxdeg_simplex = max_deg_cnp(B)
     loj_exp = Lojasiewicz_exponent(V)
-    ajp = alt_jacobian_polyhedron(V)
+    ajp = alt_jacobian_polygon(V)
     
     for f in A.cell_iterator():
         if is_coordinate(f):
@@ -334,7 +334,7 @@ def mv_factor_gen(K):
 
 def Lojasiewicz_exponent(V):
     if isolated_by_Kouchnirenko(V):
-        return max(1, np_deg(alt_jacobian_polyhedron(V)) - 1)
+        return max(1, np_deg(alt_jacobian_polygon(V)) - 1)
     else:
         return oo
 
